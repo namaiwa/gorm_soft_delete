@@ -5,7 +5,7 @@ gorm 软删枚举字段类型
 
 ##### GORM 软删枚举
 ```golang
-import sd "git.domob-inc.cn/xiaomate/xiaomate_libs/soft_delete"
+import sd "github.com/namaiwa/gorm_soft_delete"
 //定义结构体时：
 DeleteStatus sd.DeletedEnum `gorm:"deleteEnum:DELETE_STATUS_DEL;normalEnum:DELETE_STATUS_NORMAL;default:DELETE_STATUS_NORMAL"`
 ```
