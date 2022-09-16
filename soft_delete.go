@@ -1,16 +1,16 @@
-package soft_delete
+package gorm_soft_delete
 
 import (
 	"fmt"
-	"reflect"
-
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
+	"reflect"
 )
 
 const DEFAULT_DEL_ENUM = "DELETE_STATUS_DEL"
 const DEFAULT_NOR_ENUM = "DELETE_STATUS_NORMAL"
+
 type DeletedEnum string
 
 func (DeletedEnum) QueryClauses(f *schema.Field) []clause.Interface {
@@ -22,11 +22,11 @@ func (DeletedEnum) UpdateClauses(f *schema.Field) []clause.Interface {
 }
 
 func (DeletedEnum) DeleteClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{SoftDeleteDeleteClause{ Field: f}}
+	return []clause.Interface{SoftDeleteDeleteClause{Field: f}}
 }
 
 type SoftDeleteQueryClause struct {
-	Field *schema.Field
+	Field   *schema.Field
 	DelEnum string
 	NorEnum string
 }
@@ -43,7 +43,7 @@ func (sd SoftDeleteQueryClause) MergeClause(*clause.Clause) {
 
 func (sd SoftDeleteQueryClause) ModifyStatement(stmt *gorm.Statement) {
 	sd.NorEnum = DEFAULT_NOR_ENUM
-	if sd.Field.TagSettings["NORMALENUM"] != ""{
+	if sd.Field.TagSettings["NORMALENUM"] != "" {
 		sd.NorEnum = sd.Field.TagSettings["NORMALENUM"]
 	}
 	fmt.Printf("sd: %+v \n", sd)
@@ -68,11 +68,8 @@ func (sd SoftDeleteQueryClause) ModifyStatement(stmt *gorm.Statement) {
 	}
 }
 
-
-
-
 type SoftDeleteUpdateClause struct {
-	Field *schema.Field
+	Field   *schema.Field
 	DelEnum string
 	NorEnum string
 }
@@ -94,9 +91,9 @@ func (sd SoftDeleteUpdateClause) ModifyStatement(stmt *gorm.Statement) {
 }
 
 type SoftDeleteDeleteClause struct {
-	Field         *schema.Field
-	DelEnum		  string
-	NorEnum		  string
+	Field   *schema.Field
+	DelEnum string
+	NorEnum string
 }
 
 func (sd SoftDeleteDeleteClause) Name() string {
@@ -111,7 +108,7 @@ func (sd SoftDeleteDeleteClause) MergeClause(*clause.Clause) {
 
 func (sd SoftDeleteDeleteClause) ModifyStatement(stmt *gorm.Statement) {
 	sd.DelEnum = DEFAULT_DEL_ENUM
-	if sd.Field.TagSettings["DELETEENUM"] != ""{
+	if sd.Field.TagSettings["DELETEENUM"] != "" {
 		sd.DelEnum = sd.Field.TagSettings["DELETEENUM"]
 	}
 	fmt.Printf("sd: %+v \n", sd)

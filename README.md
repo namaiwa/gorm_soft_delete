@@ -1,4 +1,4 @@
-# xiaomate_libs
+# gorm soft_delete
 
 gorm 软删枚举字段类型
 
